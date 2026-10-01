@@ -1,6 +1,4 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
+const nextConfig = {
   images: {
     // Si el poster del VSL, las fotos de testimonios o los mockups de bonos
     // vienen de un dominio externo (CDN, Vimeo, S3...), añade aquí su patrón.
