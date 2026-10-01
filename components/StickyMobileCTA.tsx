@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { courseData } from "@/data/course";
+import { ACCESS_PATH, courseData } from "@/data/course";
 
 /**
  * Barra fija inferior en móvil: precio + botón.
@@ -13,7 +14,6 @@ import { courseData } from "@/data/course";
  */
 export default function StickyMobileCTA() {
   const [visible, setVisible] = useState(false);
-  const href = courseData.checkoutUrl || "#precio";
 
   useEffect(() => {
     const onScroll = () => {
@@ -50,15 +50,14 @@ export default function StickyMobileCTA() {
           </span>
         </div>
 
-        <a
-          href={href}
-          {...(courseData.checkoutUrl ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+        <Link
+          href={ACCESS_PATH}
           tabIndex={visible ? 0 : -1}
           className="surface-gold inline-flex flex-1 items-center justify-center gap-2 rounded-full px-5 py-3.5 text-[0.7rem] font-semibold tracking-[0.14em] text-ink uppercase"
         >
           Quiero mi acceso
           <ArrowRight className="h-3.5 w-3.5" strokeWidth={2.4} aria-hidden />
-        </a>
+        </Link>
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
+import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { courseData } from "@/data/course";
+import { ACCESS_PATH } from "@/data/course";
 
 type Props = {
   children: React.ReactNode;
@@ -13,8 +14,8 @@ type Props = {
 };
 
 /**
- * Único punto de salida hacia el checkout. Si `checkoutUrl` todavía está
- * vacío, el enlace cae en la sección de precio en vez de romperse.
+ * Único punto de salida hacia la compra: lleva a la página /acceso, donde se
+ * elige el método de pago (Hotmart o transferencia).
  */
 export default function CTAButton({
   children,
@@ -24,9 +25,6 @@ export default function CTAButton({
   withArrow = true,
   shimmer = false,
 }: Props) {
-  const href = courseData.checkoutUrl || "#precio";
-  const isExternal = Boolean(courseData.checkoutUrl);
-
   const sizing =
     size === "lg"
       ? "px-7 py-4 text-[0.82rem] sm:px-10 sm:py-5 sm:text-sm"
@@ -38,9 +36,8 @@ export default function CTAButton({
       : "border border-gold/45 text-beige-light hover:border-gold hover:bg-gold/10";
 
   return (
-    <a
-      href={href}
-      {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+    <Link
+      href={ACCESS_PATH}
       className={`group inline-flex items-center justify-center gap-3 rounded-full font-semibold tracking-[0.16em] uppercase transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 hover:scale-[1.015] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold-light ${sizing} ${skin} ${shimmer ? "shimmer" : ""} ${className}`}
     >
       <span className="relative z-10">{children}</span>
@@ -53,6 +50,6 @@ export default function CTAButton({
           <ArrowRight className="h-3.5 w-3.5" strokeWidth={2.2} aria-hidden />
         </span>
       )}
-    </a>
+    </Link>
   );
 }

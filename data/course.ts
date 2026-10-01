@@ -11,8 +11,42 @@
  * landing lo muestra automáticamente.
  * ========================================================================= */
 
-/** URL del checkout/pasarela de pago. La usan TODOS los botones principales. */
+/**
+ * [CHECKOUT DE HOTMART — COMPLETAR] URL completa del checkout, ej.
+ * "https://pay.hotmart.com/XXXXXXXX". La usa el botón "PAGAR AHORA" de la
+ * página /acceso. Vacío = el botón aparece desactivado (no se inventa URL).
+ */
 export const CHECKOUT_URL = "";
+
+/**
+ * Página donde se elige el método de pago. Todos los CTA de compra de la
+ * landing llevan aquí.
+ */
+export const ACCESS_PATH = "/acceso";
+
+/**
+ * [NÚMERO DE WHATSAPP — COMPLETAR] Formato internacional, SOLO dígitos, sin
+ * "+", espacios ni guiones. Ej. Ecuador: "593991234567". Lo usan los botones
+ * "HABLAR POR WHATSAPP" y "ESCRIBIR AL EQUIPO" de /acceso. Vacío = botones
+ * desactivados (no se inventa número).
+ */
+export const WHATSAPP_NUMBER = "";
+
+/** Mensaje prellenado al abrir WhatsApp desde /acceso. */
+export const WHATSAPP_MESSAGE =
+  "Hola, quiero inscribirme al curso Pestañas que Facturan por US$197 y deseo realizar el pago mediante transferencia. Quisiera recibir los datos para realizar el pago.";
+
+/**
+ * Enlace universal de WhatsApp (abre la app en móvil y WhatsApp Web/escritorio
+ * en ordenador). Devuelve "" si todavía no hay número configurado. Con
+ * `message` vacío abre el chat sin texto prellenado.
+ */
+export function whatsappUrl(message: string = WHATSAPP_MESSAGE): string {
+  const digits = WHATSAPP_NUMBER.replace(/\D/g, "");
+  if (!digits) return "";
+  const text = message.trim();
+  return text ? `https://wa.me/${digits}?text=${encodeURIComponent(text)}` : `https://wa.me/${digits}`;
+}
 
 /** URL del video de ventas (MP4/HLS directo, o embed de YouTube/Vimeo). */
 export const VSL_VIDEO_URL = "/VSL.mp4";
