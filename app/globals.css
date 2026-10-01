@@ -1,26 +1,211 @@
 @import "tailwindcss";
 
+/* =========================================================================
+   PESTAÑAS QUE FACTURAN — sistema visual
+   Negro profundo + dorado estratégico + beige editorial.
+   ========================================================================= */
+
+@theme {
+  --color-ink: #050505;
+  --color-ink-soft: #111111;
+  --color-ink-line: #1e1c18;
+
+  --color-gold: #d4a84f;
+  --color-gold-light: #e7c878;
+  --color-gold-deep: #a8803a;
+
+  --color-beige: #e9ddca;
+  --color-beige-light: #f7f2ea;
+
+  --font-display: var(--font-display), "Playfair Display", Georgia, serif;
+  --font-sans: var(--font-sans), "Inter", system-ui, sans-serif;
+
+  --ease-silk: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --gold-gradient: linear-gradient(
+    110deg,
+    #a8803a 0%,
+    #d4a84f 22%,
+    #f3e0a9 48%,
+    #d4a84f 74%,
+    #a8803a 100%
+  );
+  color-scheme: dark;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  /* El header sticky no debe tapar la sección al saltar por anchor. */
+  scroll-padding-top: 6rem;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-ink);
+  color: var(--color-beige-light);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+
+::selection {
+  background: var(--color-gold);
+  color: #050505;
+}
+
+/* --- Texto con relleno dorado (titulares) ------------------------------- */
+.text-gold-gradient {
+  background: var(--gold-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  /* Un descender de serif italic se corta sin esto. */
+  padding-bottom: 0.08em;
+}
+
+/* Sobre beige el dorado claro se lava: variante profunda para fondos claros. */
+.text-gold-gradient-deep {
+  background: linear-gradient(
+    110deg,
+    #7f5c22 0%,
+    #a8803a 28%,
+    #c99a40 50%,
+    #a8803a 72%,
+    #7f5c22 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  padding-bottom: 0.08em;
+}
+
+/* --- Superficies --------------------------------------------------------- */
+.surface-gold {
+  background: var(--gold-gradient);
+}
+
+.hairline-gold {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(212, 168, 79, 0.55) 35%,
+    rgba(231, 200, 120, 0.9) 50%,
+    rgba(212, 168, 79, 0.55) 65%,
+    transparent
+  );
+}
+
+/* Marco dorado del VSL y de las cards premium. */
+.frame-gold {
+  position: relative;
+  background:
+    linear-gradient(#0b0b0b, #0b0b0b) padding-box,
+    var(--gold-gradient) border-box;
+  border: 1px solid transparent;
+}
+
+.glow-gold {
+  box-shadow:
+    0 0 0 1px rgba(212, 168, 79, 0.18),
+    0 24px 70px -28px rgba(212, 168, 79, 0.45),
+    0 40px 120px -60px rgba(212, 168, 79, 0.3);
+}
+
+/* Fondo del hero: luz cálida de salón, sin imagen que bloquee el LCP. */
+.hero-ambient {
+  background:
+    radial-gradient(90rem 50rem at 18% -10%, rgba(212, 168, 79, 0.17), transparent 58%),
+    radial-gradient(60rem 42rem at 92% 12%, rgba(231, 200, 120, 0.12), transparent 60%),
+    radial-gradient(70rem 50rem at 50% 108%, rgba(168, 128, 58, 0.14), transparent 62%),
+    linear-gradient(180deg, #050505 0%, #0a0908 55%, #050505 100%);
+}
+
+.grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>");
+}
+
+/* --- Revelado al hacer scroll ------------------------------------------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 0.75s var(--ease-silk),
+    transform 0.75s var(--ease-silk);
+  will-change: opacity, transform;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .shimmer::after,
+  .pulse-ring {
+    animation: none !important;
+  }
+}
+
+/* --- Microanimaciones del CTA ------------------------------------------- */
+.shimmer {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-120%) skewX(-18deg);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.55),
+    transparent
+  );
+  animation: shimmer 4.5s var(--ease-silk) infinite;
+  animation-delay: 1.4s;
+}
+
+@keyframes shimmer {
+  0%,
+  62% {
+    transform: translateX(-120%) skewX(-18deg);
+  }
+  88%,
+  100% {
+    transform: translateX(220%) skewX(-18deg);
+  }
+}
+
+.pulse-ring {
+  animation: pulse-ring 2.8s var(--ease-silk) infinite;
+}
+
+@keyframes pulse-ring {
+  0% {
+    box-shadow: 0 0 0 0 rgba(231, 200, 120, 0.45);
+  }
+  70% {
+    box-shadow: 0 0 0 22px rgba(231, 200, 120, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(231, 200, 120, 0);
+  }
 }
