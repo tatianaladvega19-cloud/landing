@@ -2,21 +2,23 @@
 
 import { useState } from "react";
 import { Plus } from "lucide-react";
-import { courseData, isPending } from "@/data/course";
-import PendingNote from "./PendingNote";
+import { courseData, hasValue } from "@/data/course";
 import Reveal from "./Reveal";
 import SectionHeading from "./SectionHeading";
 
 /**
- * Acordeón de preguntas frecuentes. Las respuestas que todavía dependen de
- * una decisión comercial se muestran como pendientes, no inventadas.
+ * Acordeón de preguntas frecuentes. Solo se muestran las preguntas con
+ * respuesta confirmada en `courseData.faqs`; las vacías quedan ocultas.
  */
 export default function FAQ() {
   const [openId, setOpenId] = useState<string | null>(null);
+  const faqs = courseData.faqs.filter((faq) => hasValue(faq.answer));
+
+  if (faqs.length === 0) return null;
 
   return (
     <section id="faq" className="bg-beige-light">
-      <div className="mx-auto max-w-[56rem] px-5 py-20 sm:px-8 lg:py-28">
+      <div className="mx-auto max-w-[56rem] px-5 py-20 sm:px-8 lg:py-24">
         <SectionHeading
           tone="light"
           label="Preguntas frecuentes"
@@ -26,9 +28,8 @@ export default function FAQ() {
         />
 
         <ul className="mt-14 divide-y divide-ink/10 border-y border-ink/10 lg:mt-16">
-          {courseData.faqs.map((faq, i) => {
+          {faqs.map((faq, i) => {
             const isOpen = openId === faq.id;
-            const pending = isPending(faq.answer);
 
             return (
               <Reveal key={faq.id} delay={i * 45} as="li">
@@ -63,13 +64,9 @@ export default function FAQ() {
                   }`}
                 >
                   <div className="pr-14 pb-7">
-                    {pending ? (
-                      <PendingNote tone="light" token={faq.answer.replace(/[{}]/g, "")} />
-                    ) : (
-                      <p className="text-[0.92rem] leading-relaxed text-ink/65 text-pretty">
-                        {faq.answer}
-                      </p>
-                    )}
+                    <p className="text-[0.92rem] leading-relaxed text-ink/65 text-pretty">
+                      {faq.answer}
+                    </p>
                   </div>
                 </div>
               </Reveal>

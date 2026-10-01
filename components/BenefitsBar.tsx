@@ -1,36 +1,33 @@
-import { GraduationCap, Repeat, HeartHandshake, TrendingUp } from "lucide-react";
+import { Fragment } from "react";
+import { Brush, UserPlus, ShoppingBag, Briefcase, ChevronRight } from "lucide-react";
 import Reveal from "./Reveal";
 
 const ITEMS = [
-  { icon: GraduationCap, title: "Aprende", text: "Desde cero." },
-  { icon: Repeat, title: "Practica", text: "Con metodología paso a paso." },
-  { icon: HeartHandshake, title: "Atrae", text: "Más clientas." },
-  { icon: TrendingUp, title: "Factura", text: "Convierte tu habilidad en negocio." },
+  { icon: Brush, label: "Técnica" },
+  { icon: UserPlus, label: "Clientas" },
+  { icon: ShoppingBag, label: "Ventas" },
+  { icon: Briefcase, label: "Negocio" },
 ];
 
-/** Franja beige de cuatro columnas que corta el negro justo tras el hero. */
+/** Franja beige compacta tras el hero: el recorrido del curso en una línea. */
 export default function BenefitsBar() {
   return (
-    <section className="bg-beige-light">
-      <div className="mx-auto grid max-w-[88rem] grid-cols-2 gap-x-6 gap-y-10 px-5 py-14 sm:px-8 lg:grid-cols-4 lg:gap-x-0 lg:py-16">
-        {ITEMS.map(({ icon: Icon, title, text }, i) => (
-          <Reveal
-            key={title}
-            delay={i * 90}
-            className={`flex flex-col items-center px-2 text-center lg:px-8 ${
-              i > 0 ? "lg:border-l lg:border-ink/10" : ""
-            }`}
-          >
-            <Icon className="h-7 w-7 text-gold-deep" strokeWidth={1.3} aria-hidden />
-            <h3 className="mt-4 text-[0.72rem] font-semibold tracking-[0.3em] text-ink uppercase">
-              {title}
-            </h3>
-            <p className="mt-2 max-w-[14rem] text-[0.85rem] leading-snug text-ink/60 text-pretty">
-              {text}
-            </p>
-          </Reveal>
+    <section className="border-b border-ink/10 bg-beige-light" aria-label="Qué cubre el curso">
+      <Reveal className="mx-auto flex max-w-[60rem] flex-wrap items-center justify-center gap-x-3 gap-y-4 px-5 py-7 sm:gap-x-6 sm:px-8 lg:py-8">
+        {ITEMS.map(({ icon: Icon, label }, i) => (
+          <Fragment key={label}>
+            {i > 0 && (
+              <ChevronRight className="h-4 w-4 shrink-0 text-gold-deep/60" strokeWidth={1.6} aria-hidden />
+            )}
+            <span className="flex items-center gap-2.5">
+              <Icon className="h-5 w-5 text-gold-deep" strokeWidth={1.4} aria-hidden />
+              <span className="text-[0.68rem] font-semibold tracking-[0.26em] text-ink uppercase sm:text-[0.72rem] sm:tracking-[0.3em]">
+                {label}
+              </span>
+            </span>
+          </Fragment>
         ))}
-      </div>
+      </Reveal>
     </section>
   );
 }

@@ -7,24 +7,24 @@ import Reveal from "./Reveal";
 import SectionHeading from "./SectionHeading";
 
 /**
- * Temario en acordeón. Los títulos viven en `courseData.modules`; si un
- * módulo todavía no tiene lecciones cargadas, la fila no se despliega en vez
- * de mostrar contenido inventado.
+ * Temario: número, nombre y una línea. Viven en `courseData.modules`; si un
+ * módulo tiene lecciones cargadas, la fila se despliega en acordeón; si no,
+ * se muestra cerrada sin contenido inventado.
  */
 export default function Modules() {
   const [openId, setOpenId] = useState<string | null>(courseData.modules[0]?.id ?? null);
 
   return (
     <section id="modulos" className="bg-ink">
-      <div className="mx-auto max-w-[62rem] px-5 py-20 sm:px-8 lg:py-28">
+      <div className="mx-auto max-w-[62rem] px-5 py-20 sm:px-8 lg:py-24">
         <SectionHeading
           label="Temario"
-          title="Un método paso a paso,"
-          titleAccent="módulo a módulo."
+          title={`${courseData.modules.length} módulos,`}
+          titleAccent="de la técnica al negocio."
           className="mx-auto"
         />
 
-        <ul className="mt-14 divide-y divide-gold/12 border-y border-gold/12 lg:mt-16">
+        <ul className="mt-12 divide-y divide-gold/12 border-y border-gold/12 lg:mt-14">
           {courseData.modules.map((mod, i) => {
             const isOpen = openId === mod.id;
             const hasDetail = mod.lessons.length > 0;
@@ -38,18 +38,18 @@ export default function Modules() {
                     aria-expanded={hasDetail ? isOpen : undefined}
                     aria-controls={hasDetail ? `modulo-${mod.id}` : undefined}
                     disabled={!hasDetail}
-                    className="flex w-full items-center gap-5 py-6 text-left transition-colors duration-300 disabled:cursor-default sm:gap-8"
+                    className="flex w-full items-center gap-5 py-5 text-left transition-colors duration-300 disabled:cursor-default sm:gap-8"
                   >
-                    <span className="font-display text-2xl text-gold/45 tabular-nums transition-colors duration-300 group-hover:text-gold sm:text-3xl">
+                    <span className="w-9 shrink-0 font-display text-2xl text-gold/45 tabular-nums transition-colors duration-300 group-hover:text-gold sm:w-11 sm:text-3xl">
                       {mod.number}
                     </span>
 
                     <span className="min-w-0 flex-1">
-                      <span className="block text-[0.58rem] font-semibold tracking-[0.34em] text-gold/70 uppercase">
-                        Módulo {mod.number}
-                      </span>
-                      <span className="mt-1.5 block font-display text-lg leading-snug text-beige-light text-pretty sm:text-2xl">
+                      <span className="block font-display text-lg leading-snug text-beige-light text-pretty sm:text-[1.35rem]">
                         {mod.title}
+                      </span>
+                      <span className="mt-1 block text-[0.86rem] leading-snug text-beige/60 text-pretty">
+                        {mod.description}
                       </span>
                     </span>
 

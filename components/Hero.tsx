@@ -1,8 +1,7 @@
 import { Check, Lock } from "lucide-react";
-import { courseData } from "@/data/course";
+import { courseData, coursePrice, formatUSD } from "@/data/course";
 import CTAButton from "./CTAButton";
 import Reveal from "./Reveal";
-import SocialProof from "./SocialProof";
 import VSLPlayer from "./VSLPlayer";
 
 const BENEFITS = [
@@ -13,13 +12,14 @@ const BENEFITS = [
 ];
 
 /**
- * Hero: ~45% texto / ~55% video en desktop, con el VSL visible sin scroll.
+ * Hero: ~40% texto / ~60% video en desktop, con el VSL visible sin scroll.
  *
- * El VSL se renderiza UNA sola vez. En móvil cae entre el titular y los
- * beneficios por orden natural del documento; en desktop grid lo manda a la
- * columna derecha ocupando ambas filas.
+ * El VSL se renderiza UNA sola vez. En móvil va al final (titular →
+ * beneficios → CTA → VSL → bloque de conversión) por orden natural del
+ * documento; en desktop el grid lo manda a la columna derecha ocupando
+ * ambas filas.
  *
- * El espaciado está ajustado para que el CTA y la prueba social entren en la
+ * El espaciado está ajustado para que el CTA entre en la
  * primera pantalla: es lo que decide la conversión.
  */
 export default function Hero() {
@@ -27,7 +27,7 @@ export default function Hero() {
     <section id="inicio" className="hero-ambient relative isolate overflow-hidden">
       <div className="grain" aria-hidden />
 
-      <div className="relative mx-auto grid max-w-[88rem] gap-y-10 px-5 pt-28 pb-20 sm:px-8 lg:min-h-screen lg:grid-cols-[minmax(0,45fr)_minmax(0,55fr)] lg:grid-rows-[auto_auto] lg:items-center lg:gap-x-14 lg:gap-y-0 lg:pt-28 lg:pb-16">
+      <div className="relative mx-auto grid max-w-[88rem] gap-y-10 px-5 pt-28 pb-20 sm:px-8 lg:min-h-screen lg:grid-cols-[minmax(0,40fr)_minmax(0,60fr)] lg:grid-rows-[auto_auto] lg:items-center lg:gap-x-10 lg:gap-y-0 lg:pt-28 lg:pb-16">
         {/* ---------- Titular (fila 1, columna izquierda) ---------- */}
         <div className="lg:col-start-1 lg:row-start-1 lg:self-end">
           <Reveal>
@@ -59,16 +59,7 @@ export default function Hero() {
           </Reveal>
         </div>
 
-        {/* ---------- VSL (móvil: aquí. Desktop: columna derecha) ---------- */}
-        <Reveal delay={100} className="lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-center">
-          <VSLPlayer
-            videoUrl={courseData.vslUrl}
-            poster={courseData.vslPoster}
-            autoplayMuted={courseData.vslAutoplayMuted}
-          />
-        </Reveal>
-
-        {/* ---------- Beneficios + CTA + prueba social ---------- */}
+        {/* ---------- Beneficios + CTA (fila 2, columna izquierda) ---------- */}
         <div className="lg:col-start-1 lg:row-start-2 lg:self-start lg:pt-7">
           <Reveal delay={220}>
             <ul className="grid gap-x-6 gap-y-3 border-t border-gold/12 pt-7 sm:grid-cols-2">
@@ -94,11 +85,35 @@ export default function Hero() {
               </p>
             </div>
           </Reveal>
-
-          <Reveal delay={320}>
-            <SocialProof className="mt-7" />
-          </Reveal>
         </div>
+
+        {/* ---------- VSL + bloque de conversión (móvil: al final. Desktop: columna derecha) ---------- */}
+        <Reveal delay={100} className="lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-center">
+          <VSLPlayer
+            videoUrl={courseData.vslUrl}
+            poster={courseData.vslPoster}
+            autoplayMuted={courseData.vslAutoplayMuted}
+          />
+
+          <div className="mx-auto mt-7 max-w-2xl text-center">
+            <p className="flex items-center justify-center gap-3 text-[0.64rem] font-semibold tracking-[0.24em] whitespace-nowrap text-gold uppercase sm:tracking-[0.36em]">
+              <span aria-hidden className="hidden h-px w-12 bg-gold/40 sm:block" />
+              Mira el video hasta el final
+              <span aria-hidden className="hidden h-px w-12 bg-gold/40 sm:block" />
+            </p>
+            <p className="mt-3 text-[0.95rem] leading-relaxed text-beige-light/85 text-pretty">
+              En pocos minutos descubrirás cómo convertir tu habilidad en pestañas en un servicio
+              profesional y empezar a construir un negocio alrededor de ella.
+            </p>
+            <p className="mt-4 text-[0.66rem] font-semibold tracking-[0.16em] text-beige/55 uppercase sm:tracking-[0.24em]">
+              <span className="whitespace-nowrap">Curso + {courseData.bonuses.length} bonos</span>
+              <span className="mx-2 text-gold/60">·</span>
+              <span className="whitespace-nowrap">{formatUSD(coursePrice)}</span>
+              <span className="mx-2 text-gold/60">·</span>
+              <span className="whitespace-nowrap">Acceso inmediato</span>
+            </p>
+          </div>
+        </Reveal>
       </div>
     </section>
   );

@@ -5,13 +5,10 @@ import ProblemSection from "@/components/ProblemSection";
 import Transformation from "@/components/Transformation";
 import AuthoritySection from "@/components/AuthoritySection";
 import WhatYouLearn from "@/components/WhatYouLearn";
-import PracticeSection from "@/components/PracticeSection";
 import Modules from "@/components/Modules";
 import Audience from "@/components/Audience";
 import Testimonials from "@/components/Testimonials";
 import Bonuses from "@/components/Bonuses";
-import Offer from "@/components/Offer";
-import Pricing from "@/components/Pricing";
 import Guarantee from "@/components/Guarantee";
 import FAQ from "@/components/FAQ";
 import FinalCTA from "@/components/FinalCTA";
@@ -29,13 +26,10 @@ export default function Page() {
         <Transformation />
         <AuthoritySection />
         <WhatYouLearn />
-        <PracticeSection />
         <Modules />
         <Audience />
         <Testimonials />
         <Bonuses />
-        <Offer />
-        <Pricing />
         <Guarantee />
         <FAQ />
         <FinalCTA />

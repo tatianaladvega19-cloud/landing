@@ -7,39 +7,30 @@ import Reveal from "./Reveal";
 export default function FinalCTA() {
   return (
     <section className="relative isolate overflow-hidden bg-ink">
-      <div
-        aria-hidden
-        className="absolute inset-0 -z-10 bg-[radial-gradient(60rem_38rem_at_50%_110%,rgba(212,168,79,0.16),transparent_62%)]"
-      />
+      <div aria-hidden className="hairline-gold absolute inset-x-0 top-0 h-px opacity-40" />
       <div className="grain" aria-hidden />
 
-      <div className="mx-auto flex max-w-[56rem] flex-col items-center px-5 py-24 text-center sm:px-8 lg:py-32">
+      <div className="mx-auto flex max-w-[56rem] flex-col items-center px-5 py-24 text-center sm:px-8 lg:py-28">
         <Reveal>
           <h2 className="font-display text-[2.1rem] leading-[1.1] font-medium text-beige-light text-balance sm:text-[3.2rem]">
-            Tu próximo nivel comienza{" "}
-            <span className="text-gold-gradient italic">con una decisión.</span>
+            Tu habilidad puede ser más que un talento.
+            <br />
+            <span className="text-gold-gradient italic">Puede convertirse en un negocio.</span>
           </h2>
         </Reveal>
 
-        <Reveal delay={80}>
-          <p className="mt-7 text-[0.95rem] leading-relaxed tracking-[0.04em] text-beige/70 sm:text-base">
-            Aprende la técnica.
-            <br />
-            Consigue clientas.
-            <br />
-            Construye tu negocio.
-          </p>
-        </Reveal>
-
-        <Reveal delay={140}>
+        <Reveal delay={120}>
           <p className="mt-10 font-display text-[4rem] leading-none font-semibold text-gold-gradient tabular-nums sm:text-[5rem]">
             {courseData.priceLabel}
+          </p>
+          <p className="mt-3 text-[0.68rem] tracking-[0.32em] text-beige/55 uppercase">
+            Curso + bonos · Pago único
           </p>
         </Reveal>
 
         <Reveal delay={200} className="mt-10 w-full sm:w-auto">
           <CTAButton shimmer className="w-full sm:w-auto">
-            Quiero mi acceso a Pestañas que Facturan
+            Quiero empezar
           </CTAButton>
         </Reveal>
 

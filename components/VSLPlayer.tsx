@@ -78,7 +78,7 @@ export default function VSLPlayer({
             <button
               type="button"
               onClick={hasVideo ? start : undefined}
-              aria-label={hasVideo ? "Reproducir el video" : "Video pendiente de publicar"}
+              aria-label={hasVideo ? "Reproducir el video" : "Video de presentación"}
               className="group absolute inset-0 h-full w-full cursor-pointer"
             >
               {poster ? (
@@ -117,9 +117,10 @@ export default function VSLPlayer({
                 <Volume2 className="h-4 w-4 shrink-0 text-beige-light/70" strokeWidth={1.6} aria-hidden />
               </span>
 
-              {!hasVideo && (
+              {/* Aviso interno: solo en desarrollo, nunca al visitante. */}
+              {!hasVideo && process.env.NODE_ENV !== "production" && (
                 <span className="absolute top-3 left-3 rounded-full border border-gold/35 bg-ink/75 px-3 py-1.5 text-[0.58rem] font-semibold tracking-[0.22em] text-gold uppercase backdrop-blur-sm sm:top-5 sm:left-5">
-                  VSL pendiente
+                  [Falta URL del VSL]
                 </span>
               )}
             </button>

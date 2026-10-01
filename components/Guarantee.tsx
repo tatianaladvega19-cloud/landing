@@ -1,38 +1,40 @@
 import { ShieldCheck } from "lucide-react";
-import { courseData, isPending } from "@/data/course";
-import PendingNote from "./PendingNote";
+import { courseData, hasValue } from "@/data/course";
 import Reveal from "./Reveal";
 
 /**
- * Garantía. El texto de condiciones vive en `courseData.guarantee`; mientras
- * sea un placeholder no se publican días ni condiciones inventadas.
+ * Franja de garantía: sección independiente, negra y a todo el ancho, entre
+ * la oferta y la FAQ. Elemento de confianza, no otra oferta. Solo muestra lo
+ * confirmado en `courseData.guarantee`; las condiciones de devolución
+ * (`guaranteeDetails`) aparecen únicamente cuando se completan.
  */
 export default function Guarantee() {
-  const pending = isPending(courseData.guarantee);
+  const g = courseData.guarantee;
 
   return (
-    <section id="garantia" className="bg-ink">
-      <div className="mx-auto max-w-[52rem] px-5 py-20 sm:px-8 lg:py-24">
-        <Reveal>
-          <div className="flex flex-col items-center gap-7 rounded-[1.6rem] border border-gold/20 bg-[linear-gradient(160deg,rgba(231,200,120,0.08),rgba(5,5,5,0.3))] px-7 py-12 text-center sm:px-12">
-            <span className="grid h-20 w-20 place-items-center rounded-full border border-gold/40 bg-gold/8">
-              <ShieldCheck className="h-9 w-9 text-gold-light" strokeWidth={1.2} aria-hidden />
-            </span>
+    <section id="garantia" className="bg-ink" aria-label={g.label}>
+      <Reveal className="mx-auto flex max-w-[72rem] flex-col items-center gap-5 px-5 py-12 text-center sm:px-8 lg:flex-row lg:gap-8 lg:py-14 lg:text-left">
+        <div className="flex shrink-0 items-center gap-4">
+          <span className="grid h-14 w-14 shrink-0 place-items-center rounded-full border border-gold/45">
+            <ShieldCheck className="h-6 w-6 text-gold-light" strokeWidth={1.4} aria-hidden />
+          </span>
+          <span className="text-[0.78rem] font-semibold tracking-[0.3em] whitespace-nowrap text-gold uppercase">
+            Garantía de <span className="text-[1.15rem] text-gold-light">{g.days}</span> días
+          </span>
+        </div>
 
-            <h2 className="font-display text-[1.8rem] leading-snug font-medium text-beige-light text-balance sm:text-[2.4rem]">
-              Tu inversión <span className="text-gold-gradient italic">está protegida.</span>
-            </h2>
+        <span aria-hidden className="hidden h-12 w-px shrink-0 bg-gold/35 lg:block" />
 
-            {pending ? (
-              <PendingNote token="GARANTIA" />
-            ) : (
-              <p className="max-w-xl text-[0.95rem] leading-relaxed text-beige/70 text-pretty">
-                {courseData.guarantee}
-              </p>
-            )}
-          </div>
-        </Reveal>
-      </div>
+        <div className="lg:flex lg:items-baseline lg:gap-5">
+          <p className="font-display text-[1.7rem] leading-tight text-beige-light lg:shrink-0 lg:text-[1.9rem]">
+            {g.title}
+          </p>
+          <p className="mt-2 max-w-xl text-[0.92rem] leading-relaxed text-beige/65 text-pretty lg:mt-0">
+            {g.text}
+            {hasValue(g.guaranteeDetails) && <> {g.guaranteeDetails}</>}
+          </p>
+        </div>
+      </Reveal>
     </section>
   );
 }

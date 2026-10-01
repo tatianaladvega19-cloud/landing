@@ -1,115 +1,176 @@
 import Image from "next/image";
-import { Hand, Users, Workflow } from "lucide-react";
+import { Award } from "lucide-react";
+import { courseData, hasValue } from "@/data/course";
 import Reveal from "./Reveal";
 
-const INDICATORS = [
-  { icon: Hand, label: "Formación práctica" },
-  { icon: Users, label: "Experiencia real" },
-  { icon: Workflow, label: "Metodología aplicada" },
-];
-
-/** Marco común de foto: proporción nativa 3:2, sin filtros ni overlays. */
-const FRAME =
-  "relative overflow-hidden rounded-2xl border border-[rgba(212,168,79,0.22)] bg-ink-soft shadow-[0_18px_40px_-24px_rgba(0,0,0,0.9)]";
-
 /**
- * Autoridad con fotos reales de workshop. Solo evidencia visual: no afirma
- * que las personas sean alumnas del curso ni que este incluya certificado.
+ * Autoridad: perfil de la experta + fotos reales de formación presencial.
  *
- * Orden del DOM = orden móvil (texto → foto principal → indicadores →
- * secundarias). En desktop la rejilla coloca el texto a la izquierda y las
- * fotos a la derecha.
+ * Orden de lectura: quién es → experiencia → alumnas → formación
+ * internacional → reconocimiento → por qué puede enseñar. Todo el contenido
+ * vive en `courseData.expert`.
+ *
+ * Las fotos de la galería son evidencia visual de formación: el copy no
+ * afirma que las personas sean alumnas de este curso.
  */
+const FRAME =
+  "relative overflow-hidden rounded-2xl border border-[rgba(212,168,79,0.22)] bg-ink-soft";
+
 export default function AuthoritySection() {
+  const { expert, workshopPhotos } = courseData;
+  const [main, second, third, fourth] = workshopPhotos;
+
   return (
-    <section id="formacion-real" className="relative bg-ink">
+    <section id="experta" className="relative bg-ink">
       <div aria-hidden className="hairline-gold absolute inset-x-0 top-0 h-px opacity-40" />
 
-      <div className="mx-auto grid max-w-[80rem] gap-10 px-5 py-20 sm:px-8 lg:grid-cols-12 lg:gap-x-14 lg:gap-y-8 lg:py-28">
-        {/* Texto */}
-        <Reveal className="lg:col-span-5 lg:row-start-1 lg:self-end">
-          <span className="flex items-center gap-3 text-[0.62rem] font-semibold tracking-[0.42em] text-gold uppercase">
+      <div className="mx-auto max-w-[80rem] px-5 py-20 sm:px-8 lg:py-24">
+        <div className="grid gap-10 lg:grid-cols-12 lg:items-stretch lg:gap-14">
+          {/* Foto de la experta: el elemento visual principal */}
+          <Reveal className="lg:col-span-5">
+            <div
+              className={`${FRAME} mx-auto aspect-[4/5] w-full max-w-md lg:aspect-auto lg:h-full lg:min-h-[34rem] lg:max-w-none`}
+            >
+              <Image
+                src={expert.photo}
+                alt={expert.photoAlt}
+                fill
+                sizes="(min-width: 1024px) 34vw, 28rem"
+                className="object-cover object-[50%_28%]"
+              />
+            </div>
+          </Reveal>
+
+          {/* Texto */}
+          <Reveal delay={100} className="flex flex-col justify-center lg:col-span-7">
+            <span className="flex items-center gap-3 text-[0.62rem] font-semibold tracking-[0.42em] text-gold uppercase">
+              <span className="h-px w-10 bg-gold/50" />
+              {expert.label}
+            </span>
+
+            <h2 className="mt-5 font-display text-[1.9rem] leading-[1.12] font-medium text-balance text-beige-light sm:text-[2.3rem] lg:text-[2.5rem]">
+              {expert.title}{" "}
+              <span className="text-gold-gradient italic">{expert.titleAccent}</span>
+            </h2>
+
+            <div className="mt-6">
+              <p className="font-display text-2xl text-beige-light">{expert.name}</p>
+              <p className="mt-1.5 text-[0.68rem] font-semibold tracking-[0.22em] text-gold uppercase">
+                {expert.role}
+              </p>
+            </div>
+
+            <div className="mt-5 space-y-3">
+              {expert.story.map((paragraph) => (
+                <p
+                  key={paragraph}
+                  className="max-w-2xl text-[0.95rem] leading-relaxed text-beige/70 text-pretty"
+                >
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+
+            {/* Cifras: +700 es la protagonista */}
+            <dl className="mt-7 grid grid-cols-2 gap-3 sm:grid-cols-3">
+              {expert.stats.map((s) => (
+                <div
+                  key={s.label}
+                  className={`flex flex-col-reverse rounded-xl px-4 py-4 ${
+                    s.featured
+                      ? "order-first col-span-2 border border-gold/60 bg-gold/[0.07] sm:order-none sm:col-span-1"
+                      : "border border-gold/18 bg-ink-soft"
+                  }`}
+                >
+                  <dt
+                    className={`mt-1 text-[0.62rem] leading-snug tracking-[0.16em] uppercase ${
+                      s.featured ? "text-gold-light" : "text-beige/60"
+                    }`}
+                  >
+                    {s.label}
+                  </dt>
+                  <dd
+                    className={`font-display leading-none tabular-nums ${
+                      s.featured ? "text-gold-gradient text-[3rem]" : "text-[1.9rem] text-beige-light"
+                    }`}
+                  >
+                    {s.value}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+
+            {/* Reconocimiento: credencial secundaria */}
+            {hasValue(expert.recognition.text) && (
+              <div className="mt-4 flex items-start gap-3 rounded-xl border border-gold/18 px-4 py-3.5">
+                <Award className="mt-0.5 h-5 w-5 shrink-0 text-gold" strokeWidth={1.4} aria-hidden />
+                <p className="text-[0.88rem] leading-snug text-beige/75">
+                  <span className="block text-[0.6rem] font-semibold tracking-[0.24em] text-gold uppercase">
+                    {expert.recognition.label}
+                  </span>
+                  <span className="mt-1 block">{expert.recognition.text}</span>
+                </p>
+              </div>
+            )}
+
+            {/* Por qué puede enseñar */}
+            {hasValue(expert.authorityHeadline) && (
+              <p className="mt-7 max-w-2xl border-l-2 border-gold/60 pl-5 font-display text-lg leading-snug text-beige-light/90 italic text-pretty sm:text-xl">
+                {expert.authorityHeadline}
+              </p>
+            )}
+          </Reveal>
+        </div>
+
+        {/* Evidencia visual: formación presencial */}
+        <Reveal delay={80} className="mt-16 lg:mt-20">
+          <span className="flex items-center justify-center gap-3 text-[0.62rem] font-semibold tracking-[0.42em] text-gold uppercase">
             <span className="h-px w-10 bg-gold/50" />
             Formación real
+            <span className="h-px w-10 bg-gold/50" />
           </span>
 
-          <h2 className="mt-5 font-display text-[2rem] leading-[1.12] font-medium text-balance text-beige-light sm:text-[2.6rem] lg:text-[2.9rem]">
-            Experiencia que se demuestra{" "}
-            <span className="text-gold italic">en la práctica.</span>
-          </h2>
-
-          <p className="mt-6 font-display text-lg leading-snug text-beige/85 text-pretty sm:text-xl">
-            Detrás de una formación profesional existe algo más que teoría: práctica,
-            acompañamiento y experiencia trabajando con personas reales.
-          </p>
-
-          <p className="mt-5 text-[0.95rem] leading-relaxed text-beige/65 text-pretty sm:text-base">
-            Una formación profesional va más allá de la teoría. La práctica, el
-            acompañamiento y la experiencia en escenarios reales hacen parte del proceso
-            de aprendizaje.
-          </p>
-        </Reveal>
-
-        {/* Foto principal */}
-        <Reveal
-          delay={120}
-          className="lg:col-span-7 lg:col-start-6 lg:row-span-2 lg:row-start-1"
-        >
-          <div className={`${FRAME} aspect-[3/2]`}>
-            <Image
-              src="/foto usar 1.jpeg"
-              alt="Grupo de participantes de un workshop de formación mostrando sus certificados"
-              fill
-              sizes="(min-width: 1024px) 56vw, 100vw"
-              className="object-cover"
-            />
-          </div>
-        </Reveal>
-
-        {/* Indicadores */}
-        <Reveal delay={80} className="lg:col-span-5 lg:row-span-2 lg:row-start-2">
-          <ul className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
-            {INDICATORS.map(({ icon: Icon, label }) => (
-              <li
-                key={label}
-                className="flex items-center gap-4 rounded-xl border border-[rgba(212,168,79,0.18)] bg-ink-soft px-5 py-4"
-              >
-                <Icon className="h-5 w-5 shrink-0 text-gold" strokeWidth={1.3} aria-hidden />
-                <span className="text-[0.92rem] font-medium text-beige-light">{label}</span>
-              </li>
-            ))}
-          </ul>
-        </Reveal>
-
-        {/* Fotos secundarias */}
-        <Reveal
-          delay={160}
-          className="grid gap-5 sm:grid-cols-2 lg:col-span-7 lg:col-start-6 lg:row-start-3"
-        >
-          <div className={`${FRAME} aspect-[3/2]`}>
-            <Image
-              src="/foto usar 4.jpeg"
-              alt="Ambiente de un workshop de formación con varias participantes trabajando"
-              fill
-              sizes="(min-width: 1024px) 28vw, (min-width: 640px) 50vw, 100vw"
-              className="object-cover"
-            />
-          </div>
-
-          <figure>
-            <div className={`${FRAME} aspect-[3/2]`}>
+          <div className="mt-8 grid grid-cols-2 gap-3 sm:gap-4 lg:h-[36rem] lg:grid-cols-4 lg:grid-rows-2">
+            <div className={`${FRAME} col-span-2 aspect-[3/2] lg:row-span-2 lg:aspect-auto`}>
               <Image
-                src="/foto usar 2.jpeg"
-                alt="Detalle de certificados de un workshop"
+                src={main.src}
+                alt={main.alt}
                 fill
-                sizes="(min-width: 1024px) 28vw, (min-width: 640px) 50vw, 100vw"
+                sizes="(min-width: 1024px) 40vw, 100vw"
                 className="object-cover"
               />
             </div>
-            <figcaption className="mt-3 text-[0.78rem] tracking-wide text-beige/55 italic">
-              Una experiencia de formación cuidada en cada detalle.
-            </figcaption>
-          </figure>
+            <div className={`${FRAME} col-span-2 aspect-[3/2] lg:aspect-auto`}>
+              <Image
+                src={second.src}
+                alt={second.alt}
+                fill
+                sizes="(min-width: 1024px) 40vw, 100vw"
+                className="object-cover object-[50%_30%]"
+              />
+            </div>
+            <div className={`${FRAME} aspect-[4/3] lg:aspect-auto`}>
+              <Image
+                src={third.src}
+                alt={third.alt}
+                fill
+                sizes="(min-width: 1024px) 20vw, 50vw"
+                className="object-cover"
+              />
+            </div>
+            <div className={`${FRAME} aspect-[4/3] lg:aspect-auto`}>
+              <Image
+                src={fourth.src}
+                alt={fourth.alt}
+                fill
+                sizes="(min-width: 1024px) 20vw, 50vw"
+                className="object-cover"
+              />
+            </div>
+          </div>
+          <p className="mt-4 text-center text-[0.78rem] tracking-wide text-beige/50 italic">
+            Fotografías reales de formaciones presenciales.
+          </p>
         </Reveal>
       </div>
     </section>
