@@ -15,13 +15,13 @@
 export const CHECKOUT_URL = "";
 
 /** URL del video de ventas (MP4/HLS directo, o embed de YouTube/Vimeo). */
-export const VSL_VIDEO_URL = "";
+export const VSL_VIDEO_URL = "/VSL.mp4";
 
 /** Imagen de portada del VSL (ruta en /public o URL absoluta). */
-export const VSL_POSTER = "";
+export const VSL_POSTER = "/vsl-poster.webp";
 
 /** true = reproducir automáticamente SIN sonido al cargar. Nunca con audio. */
-export const VSL_AUTOPLAY_MUTED = false;
+export const VSL_AUTOPLAY_MUTED = true;
 
 export type Module = {
   id: string;
@@ -317,7 +317,7 @@ export const courseData = {
       id: "t1",
       kind: "image",
       image: "/testimonio.jpeg",
-      name: "Clarisse Rojas",
+      name: "Vicky Ordoñez",
       location: "Loja, Ecuador",
       rating: 5,
       quote:
@@ -339,14 +339,14 @@ export const courseData = {
     {
       id: "t2",
       kind: "image",
-      image: "/testimonio 2.jpeg",
-      name: "Vicky Ordoñez",
+      image: "/testimonio 3.jpeg",
+      name: "Clarisse Rojas",
       location: "Loja, Ecuador",
       rating: 5,
       quote:
         "Estoy muy agradecida por todo lo aprendido. El curso me ayudó a mejorar mi técnica y, sobre todo, a tener más confianza para trabajar y ofrecer mis servicios.",
       quoteStyle: "quote",
-      alt: "Participante posando con su certificado de workshop",
+      alt: "Participante recibiendo su certificado al terminar un workshop",
     },
     {
       id: "v2",

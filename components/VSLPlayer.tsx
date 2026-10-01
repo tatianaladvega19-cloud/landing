@@ -17,9 +17,12 @@ type Props = {
 /**
  * Reproductor del VSL en ratio 16:9, marco dorado y glow sutil.
  *
- * Nada de video se descarga hasta que la usuaria pulsa Play: hasta entonces
- * solo hay una portada. Así el VSL no entra en la carga inicial ni compite
- * con el LCP, y no hay salto de layout (el contenedor ya reserva el 16:9).
+ * Sin autoplay, nada de video se descarga hasta que la usuaria pulsa Play:
+ * hasta entonces solo hay una portada. Con `autoplayMuted` y un archivo de
+ * video directo, el <video> se monta desde el inicio en autoplay SIN sonido
+ * (lo que permiten los navegadores); el poster se ve hasta que arranca y la
+ * usuaria activa el audio con los controles. El contenedor reserva el 16:9,
+ * así que no hay salto de layout en ningún caso.
  */
 export default function VSLPlayer({
   videoUrl = "",
@@ -27,12 +30,13 @@ export default function VSLPlayer({
   autoplayMuted = false,
   className = "",
 }: Props) {
-  const [playing, setPlaying] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
-
   const embedUrl = toEmbedUrl(videoUrl);
   const isEmbed = Boolean(embedUrl);
   const hasVideo = Boolean(videoUrl);
+
+  // Autoplay silenciado: el <video> nativo se muestra desde el primer render.
+  const [playing, setPlaying] = useState(autoplayMuted && hasVideo && !isEmbed);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   const start = () => {
     setPlaying(true);
