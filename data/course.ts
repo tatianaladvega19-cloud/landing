@@ -49,19 +49,44 @@ export type Bonus = {
   value: number;
 };
 
-export type Testimonial = {
+/** Toda tarjeta: ★★★★★ → nombre → ubicación → frase. */
+type TestimonialBase = {
   id: string;
-  /** Ruta de foto en /public. */
-  image: string;
   /** Nombre de la alumna. Vacío = no se muestra. */
   name: string;
-  /** Frase del testimonio. Vacío = no se muestra. */
-  quote: string;
+  /** Ej. "Loja, Ecuador". Vacío = no se muestra. */
+  location: string;
   /** Estrellas (0–5). 0 = no se muestran. */
   rating: number;
+  /** Frase bajo el nombre. Vacío = no se muestra. */
+  quote: string;
+  /**
+   * "quote" = se muestra entre comillas, como testimonio de la alumna.
+   * "support" = texto de apoyo de la landing, sin comillas: NO es una cita
+   * textual de la alumna.
+   */
+  quoteStyle: "quote" | "support";
+  /** false = no se muestra en la landing (se conserva para reactivarlo). */
+  show?: boolean;
+};
+
+/** Testimonio con foto. */
+export type ImageTestimonial = TestimonialBase & {
+  kind: "image";
+  /** Ruta de foto en /public. */
+  image: string;
   /** Texto alternativo fiel a lo que muestra la foto. */
   alt: string;
 };
+
+/** Testimonio en video. */
+export type VideoTestimonial = TestimonialBase & {
+  kind: "video";
+  /** Ruta EXACTA del archivo en /public (mayúsculas y espacios incluidos). */
+  video: string;
+};
+
+export type Testimonial = ImageTestimonial | VideoTestimonial;
 
 export type ExpertStat = {
   /** Cifra tal cual se muestra, ej. "+700". */
@@ -281,36 +306,72 @@ export const courseData = {
   ] satisfies Bonus[],
 
   /*
-   * Testimonios. Las frases son copy redactado para la landing a partir del
-   * agradecimiento de cada alumna (no transcripciones literales): no añadir
-   * etiquetas de "verificado" ni resultados económicos.
+   * Testimonios, en el orden en que se muestran (foto → video → foto → video).
+   * Las frases de los testimonios con foto son copy redactado para la landing
+   * a partir del agradecimiento de cada alumna (no transcripciones literales).
+   * Las de los videos son texto de apoyo (quoteStyle "support"), no citas.
+   * No añadir etiquetas de "verificado" ni resultados económicos.
    */
   testimonials: [
     {
       id: "t1",
+      kind: "image",
       image: "/testimonio.jpeg",
       name: "Clarisse Rojas",
+      location: "Loja, Ecuador",
+      rating: 5,
       quote:
         "Me encantó el curso porque aprendí mucho más que la técnica. Ahora tengo más claridad para ofrecer mi servicio y empezar a verlo como un verdadero negocio.",
-      rating: 5,
+      quoteStyle: "quote",
       alt: "Participante recibiendo su certificado de workshop",
     },
     {
+      id: "v1",
+      kind: "video",
+      video: "/Test 1.mp4",
+      name: "Ana",
+      location: "Zamora, Ecuador",
+      rating: 5,
+      // Texto de apoyo de la landing, NO cita textual de Ana.
+      quote: "Aprende una habilidad profesional y conviértela en una oportunidad real para ti.",
+      quoteStyle: "support",
+    },
+    {
       id: "t2",
+      kind: "image",
       image: "/testimonio 2.jpeg",
       name: "Vicky Ordoñez",
+      location: "Loja, Ecuador",
+      rating: 5,
       quote:
         "Estoy muy agradecida por todo lo aprendido. El curso me ayudó a mejorar mi técnica y, sobre todo, a tener más confianza para trabajar y ofrecer mis servicios.",
-      rating: 5,
+      quoteStyle: "quote",
       alt: "Participante posando con su certificado de workshop",
     },
     {
+      id: "v2",
+      kind: "video",
+      video: "/test 2.mp4",
+      name: "Alexandra",
+      location: "El Pangui, Ecuador",
+      rating: 5,
+      // Texto de apoyo de la landing, NO cita textual de Alexandra.
+      quote:
+        "Si estás buscando empezar en el mundo de las pestañas, aquí tienes el conocimiento para dar el primer paso.",
+      quoteStyle: "support",
+    },
+    {
+      // Oculto: la fila es de 4 testimonios. Cambiar a true para mostrarlo.
       id: "t3",
+      kind: "image",
+      show: false,
       image: "/testimonio 3.jpeg",
       name: "Belen Jaramillo",
+      location: "", // [UBICACIÓN — no confirmada]
+      rating: 5,
       quote:
         "Fue una experiencia increíble. Me llevo nuevos conocimientos, más seguridad y muchas herramientas para seguir creciendo en el mundo de las pestañas.",
-      rating: 5,
+      quoteStyle: "quote",
       alt: "Participante recibiendo su certificado al terminar un workshop",
     },
   ] satisfies Testimonial[],
