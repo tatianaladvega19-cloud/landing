@@ -15,7 +15,7 @@ type Props = {
 
 /**
  * Único punto de salida hacia la compra: lleva a la página /acceso, donde se
- * elige el método de pago (Hotmart o transferencia).
+ * elige el método de pago (Payphone o transferencia).
  */
 export default function CTAButton({
   children,

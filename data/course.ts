@@ -12,11 +12,11 @@
  * ========================================================================= */
 
 /**
- * [CHECKOUT DE HOTMART — COMPLETAR] URL completa del checkout, ej.
- * "https://pay.hotmart.com/XXXXXXXX". La usa el botón "PAGAR AHORA" de la
+ * Enlace de pago de Payphone (checkout).
+ * La usa el botón "PAGAR AHORA" de la
  * página /acceso. Vacío = el botón aparece desactivado (no se inventa URL).
  */
-export const CHECKOUT_URL = "";
+export const CHECKOUT_URL = "https://ppls.me/JXYsofOVE5BKYjkkho2kDA";
 
 /**
  * Página donde se elige el método de pago. Todos los CTA de compra de la
@@ -25,12 +25,15 @@ export const CHECKOUT_URL = "";
 export const ACCESS_PATH = "/acceso";
 
 /**
- * [NÚMERO DE WHATSAPP — COMPLETAR] Formato internacional, SOLO dígitos, sin
+ * Número de WhatsApp de soporte. Formato internacional, SOLO dígitos, sin
  * "+", espacios ni guiones. Ej. Ecuador: "593991234567". Lo usan los botones
  * "HABLAR POR WHATSAPP" y "ESCRIBIR AL EQUIPO" de /acceso. Vacío = botones
  * desactivados (no se inventa número).
  */
-export const WHATSAPP_NUMBER = "";
+export const WHATSAPP_NUMBER = "593993652422";
+
+/** Número de soporte tal como se muestra en la página. */
+export const SUPPORT_PHONE_DISPLAY = "+593 99 365 2422";
 
 /** Mensaje prellenado al abrir WhatsApp desde /acceso. */
 export const WHATSAPP_MESSAGE =

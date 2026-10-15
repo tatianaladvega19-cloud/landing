@@ -23,7 +23,7 @@ const BUTTON_SKIN = {
 };
 
 /**
- * Botón hacia un destino externo (Hotmart o WhatsApp). Si la URL todavía no
+ * Botón hacia un destino externo (Payphone o WhatsApp). Si la URL todavía no
  * está configurada en `data/course.ts`, se muestra desactivado: nunca se
  * inventa un enlace.
  */
@@ -70,7 +70,7 @@ function ExternalButton({
 }
 
 /**
- * /acceso — elección del método de inscripción: Hotmart (pago inmediato) o
+ * /acceso — elección del método de inscripción: Payphone (pago inmediato) o
  * transferencia coordinada por WhatsApp. Precio, checkout y WhatsApp salen de
  * `data/course.ts`; esta página no duplica ningún valor.
  */
@@ -126,7 +126,7 @@ export default function AccesoPage() {
 
             {/* ---------- Dos métodos de pago, mismo peso visual ---------- */}
             <div className="mt-10 grid gap-5 md:mt-12 md:grid-cols-2 md:gap-6">
-              {/* Hotmart */}
+              {/* Payphone */}
               <Reveal delay={80} className="h-full">
                 <article className="frame-gold relative h-full overflow-hidden rounded-[1.6rem] p-px">
                   <div className="flex h-full flex-col rounded-[1.55rem] bg-ink-soft px-6 py-8 text-center sm:px-9 sm:py-10">
@@ -137,7 +137,7 @@ export default function AccesoPage() {
                       Pago inmediato
                     </h2>
                     <p className="mx-auto mt-4 max-w-xs text-[0.95rem] leading-relaxed text-beige/75 text-pretty">
-                      Realiza tu inscripción de forma rápida y segura mediante Hotmart.
+                      Realiza tu inscripción de forma rápida y segura mediante Payphone.
                     </p>
 
                     <p className="mt-6 font-display text-[2.4rem] leading-none font-semibold text-gold-gradient tabular-nums">
